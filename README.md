@@ -103,3 +103,69 @@ Database Created
 ```
 
 ---
+
+
+## 🔐 Login Access
+
+### 👤 User Login
+
+Regular users can browse books, add items to the cart, and place orders.
+
+**Features available to users:**
+
+* 📚 Browse book catalog
+* 🔍 Search books by title or author
+* 🛒 Add books to cart
+* 💳 Checkout and place orders
+* 📦 View order history
+
+---
+
+### 🛠️ Admin Login
+
+Administrators can manage the bookstore inventory and orders.
+
+**Admin capabilities include:**
+
+* ➕ Add new books
+* ✏️ Edit book details
+* ❌ Delete books
+* 📊 View and manage customer orders
+* 📦 Update order status
+
+---
+
+### 🎨 Example Roles
+
+| Role      | Access                          |
+| --------- | ------------------------------- |
+| 👤 User   | Browse, Cart, Orders            |
+| 🛠️ Admin | Manage Books, Orders, Dashboard |
+
+---
+
+### 🔑 Default Access (Example)
+
+```id="4z3tpy"
+User Login
+Email: user@example.com
+Password: user123
+```
+
+```id="2x6q7n"
+Admin Login
+Email: admin@bookshop.local
+Password: Admin123
+```
+
+---
+
+### 🧰 Technology Used
+
+* ASP.NET Core MVC
+* Entity Framework Core
+* SQL Server
+* Bootstrap 5
+* Razor Views
+
+---
