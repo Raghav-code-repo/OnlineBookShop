@@ -1,0 +1,80 @@
+@model IEnumerable<OnlineBookShop.Models.CartItem>
+@{
+    ViewData["Title"] = "Your Cart";
+    var total = (decimal)(ViewBag.Total ?? 0m);
+}
+
+<h1 class="h4 mb-3">Shopping Cart</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Your cart is empty. <a asp-controller="Books" asp-action="Index">Browse books</a>.
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="cart-row-@item.CartId">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@(string.IsNullOrEmpty(item.Book?.ImageUrl) ? "/images/placeholder-book.png" : item.Book!.ImageUrl)"
+                                         class="img-thumbnail me-2" style="width:60px;height:60px;object-fit:cover;" />
+                                    <div>
+                                        <div>@item.Book!.Title</div>
+                                        <div class="text-muted small">@item.Book.Author</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center" style="width:140px;">
+                                <input type="number" class="form-control form-control-sm text-center"
+                                       value="@item.Quantity" min="1"
+                                       onchange="BookShopCart.updateQuantity(@item.CartId, this.valueAsNumber)" />
+                            </td>
+                            <td class="text-end">₹@item.Book.Price.ToString("0.00")</td>
+                            <td class="text-end">₹@(item.Book.Price* item.Quantity)</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-danger"
+                                        onclick="BookShopCart.removeItem(@item.CartId)">Remove</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <strong>$<span id="cart-total">@total.ToString("0.00")</span></strong>
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Shipping and tax are simulated and not charged in this demo.
+                    </p>
+                    <a asp-controller="Orders" asp-action="Checkout" class="btn btn-primary w-100">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

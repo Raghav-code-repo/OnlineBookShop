@@ -1,0 +1,53 @@
+@model IEnumerable<OnlineBookShop.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h1 class="h4 mb-3">My Orders</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You haven't placed any orders yet. <a asp-controller="Books" asp-action="Index">Start shopping</a>.
+    </div>
+}
+else
+{
+    <div class="accordion" id="ordersAccordion">
+        @foreach (var order in Model)
+        {
+            var collapseId = $"collapse-{order.OrderId}";
+            var headingId = $"heading-{order.OrderId}";
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="@headingId">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId">
+                        <div class="w-100 d-flex justify-content-between">
+                            <span>
+                                <strong>@order.OrderNumber</strong>
+                                <span class="badge bg-secondary ms-2">@order.Status</span>
+                            </span>
+                            <span>
+                                @order.OrderDate.ToLocalTime().ToString("g") -
+                                <strong>₹@order.TotalAmount</strong>
+                            </span>
+                        </div>
+                    </button>
+                </h2>
+                <div id="@collapseId" class="accordion-collapse collapse" aria-labelledby="@headingId" data-bs-parent="#ordersAccordion">
+                    <div class="accordion-body">
+                        <ul class="list-group">
+                            @foreach (var item in order.Items)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@item.Book!.Title (x@item.Quantity)</span>
+                                    <span>₹@(item.UnitPrice* item.Quantity)</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+

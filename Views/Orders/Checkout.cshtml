@@ -1,0 +1,57 @@
+@model IEnumerable<OnlineBookShop.Models.CartItem>
+@{
+    ViewData["Title"] = "Checkout";
+    var total = Model.Sum(i => i.Book!.Price * i.Quantity);
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <h1 class="h4 mb-3">Checkout</h1>
+        <h5 class="mb-3">Payment Details (Simulated)</h5>
+        <form asp-action="PlaceOrder" method="post" class="card p-3 shadow-sm">
+            <div class="mb-3">
+                <label class="form-label">Card Holder Name</label>
+                <input name="cardHolder" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <input name="cardNumber" class="form-control" required />
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Expiry (MM/YY)</label>
+                    <input name="expiry" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">CVV</label>
+                    <input name="cvv" class="form-control" required />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                Pay $@total.ToString("0.00")
+            </button>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <h5 class="mb-3">Order Summary</h5>
+        <div class="card shadow-sm">
+            <div class="list-group list-group-flush">
+                @foreach (var item in Model)
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <div>@item.Book!.Title</div>
+                            <div class="small text-muted">@item.Quantity x $@item.Book.Price</div>
+                        </div>
+                        <strong>₹@(item.Book.Price* item.Quantity)</strong>
+                    </div>
+                }
+                <div class="list-group-item d-flex justify-content-between">
+                    <span>Total</span>
+                    <strong>₹@total</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
